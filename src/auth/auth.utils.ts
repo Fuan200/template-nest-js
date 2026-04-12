@@ -14,7 +14,7 @@ export async function verify_password_hashed(
 }
 
 export function signJwt(payload: Record<string, unknown>): string {
-  const secret = process.env.JWT_SECRET ?? 'dev-secret-change-me';
+  const secret = process.env.JWT_SECRET!;
   const header = { alg: 'HS256', typ: 'JWT' };
   const issuedAt = Math.floor(Date.now() / 1000);
   const expiresInSeconds = 60 * 60;
@@ -32,7 +32,7 @@ export function signJwt(payload: Record<string, unknown>): string {
 }
 
 export function verifyJwt(token: string): Record<string, unknown> {
-  const secret = process.env.JWT_SECRET ?? 'dev-secret-change-me';
+  const secret = process.env.JWT_SECRET!;
   const [encodedHeader, encodedPayload, signature] = token.split('.');
 
   if (!encodedHeader || !encodedPayload || !signature) {
