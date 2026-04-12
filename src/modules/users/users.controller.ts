@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { NoAuthRequired } from '../../auth/no-auth-required.decorator';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,26 +14,27 @@ export class UsersController {
     return this.usersService.create(dto);
   }
 
-  @Get()
+  @Get('get-all-users')
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
+  @Get('get-user-by-id/:id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('update-user-by-id/:id')
   update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
-    return this.usersService.update(+id, dto);
+    return this.usersService.update(id, dto);
   }
 
-  @Delete(':id')
+  @Delete('delete-user-by-id/:id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 
+  @NoAuthRequired()
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.usersService.login(dto);

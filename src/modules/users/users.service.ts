@@ -4,9 +4,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
-  hashPassword,
   signJwt,
-  verifyPasswordHashed,
+  verify_password_hashed,
+  hash_password,
 } from '../../auth/auth.utils';
 
 @Injectable()
@@ -16,13 +16,13 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const hashedPassword = await hashPassword(createUserDto.password);
+    const hashed_password = await hash_password(createUserDto.password);
 
     return this.prisma.user.create({
       data: {
         name: createUserDto.name,
         email: createUserDto.email,
-        hashed_password: hashedPassword,
+        hashed_password: hashed_password,
       },
       omit: {
         hashed_password: true,
@@ -31,19 +31,40 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.prisma.user.findMany({
+      omit: { hashed_password: true }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        id: id
+      },
+      omit: { hashed_password: true },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, dto: UpdateUserDto) {
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        name: dto.name,
+        email: dto.email,
+      },
+      omit: { hashed_password: true },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.prisma.user.delete({
+      where: {
+        id,
+      },
+      omit: { hashed_password: true },
+    });
   }
 
   async login(dto: LoginDto) {
@@ -53,7 +74,7 @@ export class UsersService {
       },
     });
 
-  if (!user || !(await verifyPasswordHashed(user.hashed_password, dto.password))) {
+  if (!user || !(await verify_password_hashed(user.hashed_password, dto.password))) {
     throw new UnauthorizedException('INVALID_CREDENTIALS');
   }
 
