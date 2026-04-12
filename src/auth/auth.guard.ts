@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { verifyJwt } from './auth.utils';
 import { NO_AUTH_REQUIRED_KEY } from './no-auth-required.decorator';
@@ -13,10 +8,10 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const noAuthRequired = this.reflector.getAllAndOverride<boolean>(
-      NO_AUTH_REQUIRED_KEY,
-      [context.getHandler(), context.getClass()],
-    );
+    const noAuthRequired = this.reflector.getAllAndOverride<boolean>(NO_AUTH_REQUIRED_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (noAuthRequired) {
       return true;

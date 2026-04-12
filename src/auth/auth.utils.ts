@@ -40,22 +40,18 @@ export function verifyJwt(token: string): Record<string, unknown> {
   }
 
   const data = `${encodedHeader}.${encodedPayload}`;
-  const expectedSignature = createHmac('sha256', secret)
-    .update(data)
-    .digest('base64url');
+  const expectedSignature = createHmac('sha256', secret).update(data).digest('base64url');
 
   if (signature !== expectedSignature) {
     throw new Error('INVALID_TOKEN');
   }
 
-  const payload = JSON.parse(
-    Buffer.from(encodedPayload, 'base64url').toString('utf-8'),
-  ) as Record<string, unknown>;
+  const payload = JSON.parse(Buffer.from(encodedPayload, 'base64url').toString('utf-8')) as Record<
+    string,
+    unknown
+  >;
 
-  if (
-    typeof payload.exp !== 'number' ||
-    payload.exp <= Math.floor(Date.now() / 1000)
-  ) {
+  if (typeof payload.exp !== 'number' || payload.exp <= Math.floor(Date.now() / 1000)) {
     throw new Error('TOKEN_EXPIRED');
   }
 

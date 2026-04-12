@@ -3,17 +3,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import {
-  signJwt,
-  verify_password_hashed,
-  hash_password,
-} from '../../auth/auth.utils';
+import { signJwt, verify_password_hashed, hash_password } from '../../auth/auth.utils';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
     const hashed_password = await hash_password(createUserDto.password);
@@ -32,14 +26,14 @@ export class UsersService {
 
   findAll() {
     return this.prisma.user.findMany({
-      omit: { hashed_password: true }
+      omit: { hashed_password: true },
     });
   }
 
   findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {
-        id: id
+        id: id,
       },
       omit: { hashed_password: true },
     });
@@ -74,9 +68,9 @@ export class UsersService {
       },
     });
 
-  if (!user || !(await verify_password_hashed(user.hashed_password, dto.password))) {
-    throw new UnauthorizedException('INVALID_CREDENTIALS');
-  }
+    if (!user || !(await verify_password_hashed(user.hashed_password, dto.password))) {
+      throw new UnauthorizedException('INVALID_CREDENTIALS');
+    }
 
     const jwt_token = signJwt({
       sub: user.id,
@@ -95,5 +89,4 @@ export class UsersService {
       },
     };
   }
-
 }
