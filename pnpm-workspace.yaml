@@ -2,16 +2,3 @@ allowBuilds:
   '@prisma/engines': set this to true or false
   '@swc/core': set this to true or false
   prisma: set this to true or false
-minimumReleaseAgeExclude:
-  - file-type@21.3.1
-  - file-type@21.3.2
-  - '@hono/node-server@1.19.13'
-  - js-yaml@4.1.2
-  - multer@2.2.0
-overrides:
-  '@hono/node-server@<1.19.13': ^1.19.13
-  file-type@>=13.0.0 <21.3.1: ^21.3.1
-  file-type@>=20.0.0 <=21.3.1: ^21.3.2
-  js-yaml@<=4.1.1: ^4.1.2
-  multer@>=1.0.0 <2.2.0: ^2.2.0
-  multer@>=2.0.0-alpha.1 <2.2.0: ^2.2.0
