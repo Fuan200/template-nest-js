@@ -36,7 +36,11 @@ describe('UsersService', () => {
 
   it('hashes a password before creating a user', async () => {
     jest.mocked(hash_password).mockResolvedValue('hashed-password');
-    const createdUser = { id: '98cffccd-a526-4ebc-8398-ad74ac720b4b', name: 'Ada', email: 'ada@example.com' };
+    const createdUser = {
+      id: '98cffccd-a526-4ebc-8398-ad74ac720b4b',
+      name: 'Ada',
+      email: 'ada@example.com',
+    };
     prisma.user.create.mockResolvedValue(createdUser);
 
     await expect(
@@ -54,7 +58,9 @@ describe('UsersService', () => {
   });
 
   it('queries users without password hashes', async () => {
-    const users = [{ id: '98cffccd-a526-4ebc-8398-ad74ac720b4b', name: 'Ada', email: 'ada@example.com' }];
+    const users = [
+      { id: '98cffccd-a526-4ebc-8398-ad74ac720b4b', name: 'Ada', email: 'ada@example.com' },
+    ];
     prisma.user.findMany.mockResolvedValue(users);
 
     await expect(service.findAll()).resolves.toEqual(users);
@@ -65,7 +71,11 @@ describe('UsersService', () => {
   });
 
   it('uses the requested id for user read, update, and delete operations', async () => {
-    const user = { id: '98cffccd-a526-4ebc-8398-ad74ac720b4b', name: 'Ada', email: 'ada@example.com' };
+    const user = {
+      id: '98cffccd-a526-4ebc-8398-ad74ac720b4b',
+      name: 'Ada',
+      email: 'ada@example.com',
+    };
     prisma.user.findUnique.mockResolvedValue(user);
     prisma.user.update.mockResolvedValue(user);
     prisma.user.delete.mockResolvedValue(user);

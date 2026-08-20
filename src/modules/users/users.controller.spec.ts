@@ -27,7 +27,11 @@ describe('UsersController', () => {
   });
 
   it('delegates CRUD requests to the users service', async () => {
-    const user = { id: '98cffccd-a526-4ebc-8398-ad74ac720b4b', name: 'Ada', email: 'ada@example.com' };
+    const user = {
+      id: '98cffccd-a526-4ebc-8398-ad74ac720b4b',
+      name: 'Ada',
+      email: 'ada@example.com',
+    };
     usersService.create.mockResolvedValue(user);
     usersService.findAll.mockResolvedValue([user]);
     usersService.findOne.mockResolvedValue(user);
@@ -54,7 +58,10 @@ describe('UsersController', () => {
   });
 
   it('delegates login requests to the users service', async () => {
-    const result = { jwt_token: 'signed-token', user: { id: '98cffccd-a526-4ebc-8398-ad74ac720b4b' } };
+    const result = {
+      jwt_token: 'signed-token',
+      user: { id: '98cffccd-a526-4ebc-8398-ad74ac720b4b' },
+    };
     usersService.login.mockResolvedValue(result);
 
     await expect(
