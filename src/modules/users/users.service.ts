@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { LoginDto } from './dto/login.dto';
-import { PrismaService } from '../../prisma/prisma.service';
-import { signJwt, verify_password_hashed, hash_password } from '../../auth/auth.utils';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
+import { LoginDto } from './dto/login.dto.js';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { signJwt, verify_password_hashed, hash_password } from '../../auth/auth.utils.js';
 
 @Injectable()
 export class UsersService {

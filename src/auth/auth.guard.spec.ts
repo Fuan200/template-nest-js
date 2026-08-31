@@ -1,17 +1,18 @@
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Reflector } from '@nestjs/core';
-import { verifyJwt } from './auth.utils';
-import { AuthGuard } from './auth.guard';
+import { vi } from 'vitest';
+import { verifyJwt } from './auth.utils.js';
+import { AuthGuard } from './auth.guard.js';
 
-jest.mock('./auth.utils', () => ({
-  verifyJwt: jest.fn(),
+vi.mock('./auth.utils.js', () => ({
+  verifyJwt: vi.fn(),
 }));
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;
   const reflector = {
-    getAllAndOverride: jest.fn(),
+    getAllAndOverride: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -23,7 +24,7 @@ describe('AuthGuard', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it('allows routes marked as public without checking a token', () => {
@@ -45,7 +46,7 @@ describe('AuthGuard', () => {
     const request = { headers: { authorization: 'Bearer signed-token' } };
     const payload = { sub: '98cffccd-a526-4ebc-8398-ad74ac720b4b', email: 'ada@example.com' };
     reflector.getAllAndOverride.mockReturnValue(false);
-    jest.mocked(verifyJwt).mockReturnValue(payload);
+    vi.mocked(verifyJwt).mockReturnValue(payload);
 
     expect(guard.canActivate(createContext(request))).toBe(true);
     expect(verifyJwt).toHaveBeenCalledWith('signed-token');
@@ -54,7 +55,7 @@ describe('AuthGuard', () => {
 
   it('rejects a malformed or expired token', () => {
     reflector.getAllAndOverride.mockReturnValue(false);
-    jest.mocked(verifyJwt).mockImplementation(() => {
+    vi.mocked(verifyJwt).mockImplementation(() => {
       throw new Error('INVALID_TOKEN');
     });
 
@@ -67,7 +68,7 @@ describe('AuthGuard', () => {
 function createContext(request: { headers?: { authorization?: string } }): ExecutionContext {
   return {
     switchToHttp: () => ({ getRequest: () => request }),
-    getHandler: () => jest.fn(),
-    getClass: () => jest.fn(),
+    getHandler: () => vi.fn(),
+    getClass: () => vi.fn(),
   } as unknown as ExecutionContext;
 }

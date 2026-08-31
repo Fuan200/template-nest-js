@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
-import { verifyJwt } from './auth.utils';
-import { NO_AUTH_REQUIRED_KEY } from './no-auth-required.decorator';
+import { verifyJwt } from './auth.utils.js';
+import { NO_AUTH_REQUIRED_KEY } from './no-auth-required.decorator.js';
 
 type AuthenticatedRequest = Request & {
   user: Record<string, unknown>;

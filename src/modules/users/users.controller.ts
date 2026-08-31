@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { NoAuthRequired } from '../../auth/no-auth-required.decorator';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { LoginDto } from './dto/login.dto';
+import { NoAuthRequired } from '../../auth/no-auth-required.decorator.js';
+import { UsersService } from './users.service.js';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
+import { LoginDto } from './dto/login.dto.js';
 
 @Controller('users')
 export class UsersController {

@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
-import { UsersController } from '../src/modules/users/users.controller';
-import { UsersService } from '../src/modules/users/users.service';
+import { vi } from 'vitest';
+import { UsersController } from '../src/modules/users/users.controller.js';
+import { UsersService } from '../src/modules/users/users.service.js';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
   const usersService = {
-    login: jest.fn(),
+    login: vi.fn(),
   };
 
   beforeAll(async () => {
@@ -22,7 +23,7 @@ describe('UsersController (e2e)', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   afterAll(async () => {

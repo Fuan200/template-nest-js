@@ -1,24 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
-import { hash_password, signJwt, verify_password_hashed } from '../../auth/auth.utils';
-import { UsersService } from './users.service';
+import { vi } from 'vitest';
+import { PrismaService } from '../../prisma/prisma.service.js';
+import { hash_password, signJwt, verify_password_hashed } from '../../auth/auth.utils.js';
+import { UsersService } from './users.service.js';
 
-jest.mock('../../auth/auth.utils', () => ({
-  hash_password: jest.fn(),
-  verify_password_hashed: jest.fn(),
-  signJwt: jest.fn(),
+vi.mock('../../auth/auth.utils.js', () => ({
+  hash_password: vi.fn(),
+  verify_password_hashed: vi.fn(),
+  signJwt: vi.fn(),
 }));
 
 describe('UsersService', () => {
   let service: UsersService;
   const prisma = {
     user: {
-      create: jest.fn(),
-      findMany: jest.fn(),
-      findUnique: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
+      create: vi.fn(),
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
     },
   };
 
@@ -31,11 +32,11 @@ describe('UsersService', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it('hashes a password before creating a user', async () => {
-    jest.mocked(hash_password).mockResolvedValue('hashed-password');
+    vi.mocked(hash_password).mockResolvedValue('hashed-password');
     const createdUser = {
       id: '98cffccd-a526-4ebc-8398-ad74ac720b4b',
       name: 'Ada',
@@ -109,8 +110,8 @@ describe('UsersService', () => {
       updated_at: new Date('2026-01-01T00:00:00.000Z'),
     };
     prisma.user.findUnique.mockResolvedValue(user);
-    jest.mocked(verify_password_hashed).mockResolvedValue(true);
-    jest.mocked(signJwt).mockReturnValue('signed-token');
+    vi.mocked(verify_password_hashed).mockResolvedValue(true);
+    vi.mocked(signJwt).mockReturnValue('signed-token');
 
     await expect(service.login({ email: user.email, password: 'password123' })).resolves.toEqual({
       jwt_token: 'signed-token',

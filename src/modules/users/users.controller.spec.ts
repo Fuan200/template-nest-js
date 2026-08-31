@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { vi } from 'vitest';
+import { UsersController } from './users.controller.js';
+import { UsersService } from './users.service.js';
 
 describe('UsersController', () => {
   let controller: UsersController;
   const usersService = {
-    create: jest.fn(),
-    findAll: jest.fn(),
-    findOne: jest.fn(),
-    update: jest.fn(),
-    remove: jest.fn(),
-    login: jest.fn(),
+    create: vi.fn(),
+    findAll: vi.fn(),
+    findOne: vi.fn(),
+    update: vi.fn(),
+    remove: vi.fn(),
+    login: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -23,7 +24,7 @@ describe('UsersController', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it('delegates CRUD requests to the users service', async () => {
